@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt") //Agregado
     id("dagger.hilt.android.plugin") //Agregado
+
+    id("androidx.room") //Agregado Recien
+    id("com.google.devtools.ksp") //Agregado Recien
 }
 
 android {
@@ -39,16 +42,13 @@ android {
     buildFeatures {
         compose = true
     }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
-
-    implementation ("androidx.compose.material3:material3:1.2.0")
-    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
-    implementation ("androidx.compose.ui:ui:1.4.3")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.4.3")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0") // Reemplazo de hilt-lifecycle-viewmodel
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,13 +81,31 @@ dependencies {
 //Agregado Dagger - Hilt Compose
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 //old 1.0.0
-    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1") //old 1.0.5
-    implementation ("io.coil-kt:coil-compose:2.7.0") //old 2.4.0
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.2") //old 1.0.5
+ //   implementation ("io.coil-kt:coil-compose:2.7.0") //old 2.4.0
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 //Agregado LiveData compose//implementation ("androidx.compose.ui:ui-tooling")
     implementation ("androidx.compose.foundation:foundation")
     implementation ("androidx.compose.runtime:runtime-livedata")
 //App Compact para detectar modo dia noche
     val appcompat_version = "1.7.0" //old 1.6.1
     implementation("androidx.appcompat:appcompat:$appcompat_version")//Agregado recien
+
+//Room
+    val room_version = "2.7.0"
+    implementation("androidx.room:room-runtime:$room_version")
+// If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
+// See Add the KSP plugin to your project
+    ksp("androidx.room:room-compiler:$room_version")
+// If this project only uses Java source, use the Java annotationProcessor
+// No additional plugins are necessary
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+// optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    //Manager permissions
+    implementation ("com.google.accompanist:accompanist-permissions:0.37.2")
 
 }
